@@ -326,10 +326,10 @@ st.sidebar.divider()
 st.sidebar.subheader("Property Information")
 
 # Bedroom
-bedroom_max = max(
-    1,
-    int(df_clean["Bedroom"].max())
-)
+# Safely determine the slider maximum even if the cleaned column contains only missing values.
+bedroom_values = pd.to_numeric(df_clean["Bedroom"], errors="coerce").dropna()
+bedroom_max = int(bedroom_values.max()) if not bedroom_values.empty else 5
+bedroom_max = max(1, bedroom_max)
 
 bedroom = st.sidebar.slider(
     "Bedroom",
@@ -339,10 +339,9 @@ bedroom = st.sidebar.slider(
 )
 
 # Bathroom
-bathroom_max = max(
-    1,
-    int(df_clean["Bathroom"].max())
-)
+bathroom_values = pd.to_numeric(df_clean["Bathroom"], errors="coerce").dropna()
+bathroom_max = int(bathroom_values.max()) if not bathroom_values.empty else 5
+bathroom_max = max(1, bathroom_max)
 
 bathroom = st.sidebar.slider(
     "Bathroom",
